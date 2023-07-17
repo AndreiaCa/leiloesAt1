@@ -1,6 +1,9 @@
 
 import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -201,25 +204,32 @@ public class listagemVIEW extends javax.swing.JFrame {
     private javax.swing.JTable listaProdutos;
     // End of variables declaration//GEN-END:variables
 
-    private void listarProdutos(){
-        try {
-            ProdutosDAO produtosdao = new ProdutosDAO();
-            
-            DefaultTableModel model = (DefaultTableModel) listaProdutos.getModel();
+    public void listarProdutos(){
+            conectaDAO dao = new conectaDAO();
+            ProdutosDAO daop= new ProdutosDAO();
+      
+          List<ProdutosDTO> lista = daop.listagem();
+          DefaultTableModel model =(DefaultTableModel) listaProdutos.getModel();
+       
+            listaProdutos.setRowSorter(new TableRowSorter(model));
+           
             model.setNumRows(0);
-            
-            ArrayList<ProdutosDTO> listagem = produtosdao.listarProdutos();
-            
-            for(int i = 0; i < listagem.size(); i++){
-                model.addRow(new Object[]{
-                    listagem.get(i).getId(),
-                    listagem.get(i).getNome(),
-                    listagem.get(i).getValor(),
-                    listagem.get(i).getStatus()
-                });
-            }
-        } catch (Exception e) {
-        }
-    
+         for (ProdutosDTO p : lista) { 
+               
+                     Object[] dados = new Object[]{
+                    p.getId(),
+                    p.getNome(),
+                    p.getValor(),
+                    p.getStatus()
+                     };
+                   
+               
+               model.addRow(dados);
+      
+        
+      
+         }
     }
 }
+
+
