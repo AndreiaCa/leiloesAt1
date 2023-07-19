@@ -162,7 +162,7 @@ public class cadastroVIEW extends javax.swing.JFrame {
          
       dao.connectDB();
          
-    
+            
 
             resposta = produtodao.cadastrarProduto(produto);
 
