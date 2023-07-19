@@ -1,3 +1,8 @@
+
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -14,6 +19,7 @@ public class Vendas extends javax.swing.JFrame {
      */
     public Vendas() {
         initComponents();
+        listarProdutosVendidos();
     }
 
     /**
@@ -129,6 +135,32 @@ public class Vendas extends javax.swing.JFrame {
          new cadastroVIEW().setVisible(true);
     }//GEN-LAST:event_botaoVoltarVActionPerformed
 
+    
+    public void listarProdutosVendidos(){
+            conectaDAO dao = new conectaDAO();
+            ProdutosDAO daop= new ProdutosDAO();
+      
+          List<ProdutosDTO> lista = daop.listagemPVendidos();
+          DefaultTableModel model =(DefaultTableModel) tabelaVendas.getModel();
+       
+            tabelaVendas.setRowSorter(new TableRowSorter(model));
+           
+            model.setNumRows(0);
+         for (ProdutosDTO p : lista) { 
+               
+                     Object[] dados = new Object[]{
+                    p.getId(),
+                    p.getNome(),
+                   
+                     };
+                   
+               
+               model.addRow(dados);
+      
+        
+      
+         }
+    }
     /**
      * @param args the command line arguments
      */

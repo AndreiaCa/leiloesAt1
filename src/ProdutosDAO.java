@@ -121,7 +121,7 @@ public class ProdutosDAO {
                 ProdutosDTO p = new ProdutosDTO();
                 p.setId(resultset.getInt("id"));
                 p.setNome(resultset.getString("nome"));
-                p.setStatus(resultset.getString("status"));
+               
                 
                 lista.add(p);
             }
