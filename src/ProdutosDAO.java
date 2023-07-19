@@ -72,7 +72,7 @@ public class ProdutosDAO {
         }
     }
     
-   
+     
       public List<ProdutosDTO> listagem() {
         
         String sql = "select * FROM produtos ";
@@ -91,6 +91,36 @@ public class ProdutosDAO {
                 p.setId(resultset.getInt("id"));
                 p.setNome(resultset.getString("nome"));
                 p.setValor(resultset.getInt("valor"));
+                p.setStatus(resultset.getString("status"));
+                
+                lista.add(p);
+            }
+            return lista;
+        } catch (SQLException ex) {
+            System.out.println("Erro ao conectar AQUII:" + ex.getMessage());
+            return null;
+        }
+        
+    }
+      
+      public List<ProdutosDTO> listagemPVendidos() {
+        
+        String sql = "select id ,nome from produtos WHERE status ='Vendido' ";
+        
+      conn = new conectaDAO().connectDB();
+       
+        try {
+            prep = conn.prepareStatement(sql);
+
+            
+            resultset = prep.executeQuery();
+            
+            List<ProdutosDTO> lista = new ArrayList<>();
+            
+            while (resultset.next()) {
+                ProdutosDTO p = new ProdutosDTO();
+                p.setId(resultset.getInt("id"));
+                p.setNome(resultset.getString("nome"));
                 p.setStatus(resultset.getString("status"));
                 
                 lista.add(p);
