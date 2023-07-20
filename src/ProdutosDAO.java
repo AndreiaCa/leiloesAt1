@@ -48,8 +48,31 @@ public class ProdutosDAO {
         
         
     }
+     public int venderProduto(int id) {
+         
+        int status;
+        conn = new conectaDAO().connectDB();
+
+        try {
+           
+        prep=conn.prepareStatement("UPDATE produtos SET  status='Vendido' WHERE id=? "); 
+          //PreparedStatement st = this.conn.prepareStatement(sql);
+            
+           
+        
+            prep.setInt(1,id);
+        
+            
+            status = prep.executeUpdate();
+            return status;
+
+        } catch (SQLException ex) {
+            System.out.println("Erro ao editar o filme " + ex.getErrorCode());
+            return ex.getErrorCode();
+        }
+    }
     
-   
+     
       public List<ProdutosDTO> listagem() {
         
         String sql = "select * FROM produtos ";
@@ -65,9 +88,40 @@ public class ProdutosDAO {
             
             while (resultset.next()) {
                 ProdutosDTO p = new ProdutosDTO();
+                p.setId(resultset.getInt("id"));
                 p.setNome(resultset.getString("nome"));
                 p.setValor(resultset.getInt("valor"));
                 p.setStatus(resultset.getString("status"));
+                
+                lista.add(p);
+            }
+            return lista;
+        } catch (SQLException ex) {
+            System.out.println("Erro ao conectar AQUII:" + ex.getMessage());
+            return null;
+        }
+        
+    }
+      
+      public List<ProdutosDTO> listagemPVendidos() {
+        
+        String sql = "select id ,nome from produtos WHERE status ='Vendido' ";
+        
+      conn = new conectaDAO().connectDB();
+       
+        try {
+            prep = conn.prepareStatement(sql);
+
+            
+            resultset = prep.executeQuery();
+            
+            List<ProdutosDTO> lista = new ArrayList<>();
+            
+            while (resultset.next()) {
+                ProdutosDTO p = new ProdutosDTO();
+                p.setId(resultset.getInt("id"));
+                p.setNome(resultset.getString("nome"));
+               
                 
                 lista.add(p);
             }
